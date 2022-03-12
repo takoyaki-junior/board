@@ -1,0 +1,8 @@
+__pycache__/
+*.log
+*.pyc
+.venv
+.vscode
+.env
+local_settings.py
+command

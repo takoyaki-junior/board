@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block page_title %}3ちゃんねる{% endblock %}
+
+{% block title %}3ちゃんねる{% endblock %}
+
+{% block content %}
+    {% for topic in topics %}
+        <div class="topic">
+            <p class="topic">{{ topic.text }}</p>
+            {{ topic.created_at }}
+            <hr>
+        </div>
+    {% endfor %}
+{% endblock %}
