@@ -5,4 +5,4 @@ __pycache__/
 .vscode
 .env
 local_settings.py
-command
+command.txt
