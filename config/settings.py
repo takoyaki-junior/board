@@ -24,8 +24,8 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 # Application definition
 INSTALLED_APPS = [
     # Local apps
+    'accounts.apps.AccountsConfig',
     'board.apps.BoardConfig',
-    'user.apps.UserConfig',
     # Third party apps
     # Django apps
     'django.contrib.admin',
@@ -106,6 +106,10 @@ USE_I18N = True
 
 USE_TZ = True
 
+# LOGIN
+LOGIN_URL = 'accounts:login'  # ログインしていないときのリダイレクト先
+LOGIN_REDIRECT_URL = 'board:index'  # ログイン後のリダイレクト先
+LOGOUT_REDIRECT_URL = 'accounts:login'  # ログアウト後のリダイレクト先
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -118,7 +122,7 @@ STATICFILES_DIRS = (
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-AUTH_USER_MODEL = 'user.User'
+AUTH_USER_MODEL = 'accounts.User'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

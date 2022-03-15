@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block page_title %}Write{% endblock %}
-{% block title %}Write{% endblock %}
+{% block page_title %}Create{% endblock %}
+{% block title %}Create{% endblock %}
 
 {% block content %}
-    <form method="post" action="{% url 'board:write' %}">
+    <form method="post" action="{% url 'board:create' %}">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="button">投稿</button>

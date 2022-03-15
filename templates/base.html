@@ -4,28 +4,40 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <style>
+      h1 {font-size: 150%;}
+      h2 {font-size: 130%;}
+      h3 {font-size: 110%;}
+      h4 {font-size: 100%;}
+      h5 {font-size: 100%;}
+      h6 {font-size: 100%;}
+    </style>
     <title>{% block page_title %}{% endblock %}</title>
   </head>
   <body>
     <nav>
       <p class="site-name">3ちゃんねる</p>
       <ul>
-        <li><a href="{% url 'board:index' %}">Top</a></li>
-        <li><a href="{% url 'board:write' %}">Write</a></li>
+        {% if user.is_authenticated %}
+          <!-- ログインしているとき -->
+          <li class='nav-time'><span class='navbar-text'>name : {{ user }}</span></li>
+          <li><a href="{% url 'board:index' %}">Top</a></li>
+          <li><a href="{% url 'board:create' %}">Create</a></li>
+          <li class='nav-item'><a href='{% url "accounts:logout" %}' class='logout nav-link'>ログアウト</a></li>
+        {% else %}
+          <!-- ログインしていないとき -->
+          <li class="nav-item"><a href='{% url "accounts:login" %}' class='login nav-link'>ログイン</a></li>
+          <li class="nav-item"><a href='{% url "accounts:signup" %}' class='signup nav-link'>ユーザー登録</a></li>
+        {% endif %}
       </ul>
-  </nav>
-
-  <div class="title">
-    <h1>{% block title %}{% endblock %}</h1>
-  </div>
-
-  <hr>
-
-  <div class="content">
-    {% block content%}{% endblock %}
-  </div>
-
-  <hr>
-
+    </nav>
+    <div class="title">
+      <h1>{% block title %}{% endblock %}</h1>
+    </div>
+    <hr>
+    <div class="content">
+      {% block content%}{% endblock %}
+    </div>
+    <hr>
   </body>
 </html>
