@@ -1,10 +1,18 @@
-from django import forms
-from .models import Topic
+from django.forms import ModelForm
+from .models import Thread, Comment
 
 
-class CreateForm(forms.ModelForm):
+class ThreadForm(ModelForm):
     class Meta:
         # モデルを指定
-        model = Topic
+        model = Thread
         # フォームとして表示したいカラムを指定
-        fields = ('text',)
+        fields = ("title", "content")
+
+
+class CommentForm(ModelForm):
+    class Meta:
+        # モデルを指定
+        model = Comment
+        # フォームとして表示したいカラムを指定
+        fields = ("comment",)

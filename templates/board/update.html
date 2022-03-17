@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block page_title %}Create{% endblock %}
-{% block title %}スレッド作成{% endblock %}
+{% block page_title %}スレッド編集{% endblock %}
+{% block title %}スレッド編集{% endblock %}
 
 {% block content %}
-    <form method="post" action="{% url 'board:create' %}">
+    <form method="post" action='{% url "board:update" thread.pk %}'>
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="button">投稿</button>
+        <button type="submit" class="button">保存</button>
     </form>
     <div class="mt-3">
         <a href='JavaScript:history.back()' class='btn btn-outline-primary'>< 戻る</a>

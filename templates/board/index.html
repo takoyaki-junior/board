@@ -4,11 +4,15 @@
 {% block title %}3ちゃんねる{% endblock %}
 
 {% block content %}
-    {% for topic in topics %}
-        <div class="topic">
-            <p class="topic">{{ topic.text }}</p>
-            {{ topic.created_at }}
-            <hr>
-        </div>
+    {% for thread in threads %}
+        <tr>
+            <td>
+                <a href='{% url "board:detail" thread.pk %}'>{{ thread.title }}</a>
+                <br>
+                作成者：{{ thread.created_by}}
+                更新日時：{{ thread.created_at|date:"Y-m-j H:i" }}
+            </td>
+            <td>{{ thread.content }}</td>
+        </tr>
     {% endfor %}
 {% endblock %}

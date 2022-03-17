@@ -1,17 +1,44 @@
 from django.db import models
-from django.utils import timezone
+from accounts.models import User
 
 
-class Topic(models.Model):
+class Thread(models.Model):
 
-    # カラム名=データの形式(管理画面に表示される名前,その他の制約)
-    text = models.CharField(verbose_name='本文', max_length=255)
-    created_at = models.DateField(verbose_name='作成日', default=timezone.now)
+    # カラム
+    title = models.CharField(
+        verbose_name='タイトル', blank=False, null=False, max_length=150)
+    content = models.TextField(
+        verbose_name='内容', blank=True, null=True)
+    created_by = models.ForeignKey(
+        User, on_delete=models.PROTECT)
+    created_at = models.DateTimeField(
+        verbose_name='作成日時', auto_now_add=True)
+    updated_at = models.DateTimeField(
+        verbose_name='更新日時', auto_now=True)
 
-    # 管理画面に表示されるように設定(おまじない)
     def __str__(self):
-        return self.text, self.created_at
+        return self.title
 
-    # Metaとかobjectとかはおまじない
     class Meta:
-        db_table = 'topic'
+        db_table = 'thread'
+
+
+class Comment(models.Model):
+
+    # カラム
+    comment = models.TextField(
+        verbose_name='コメント', blank=False, null=False)
+    created_by = models.ForeignKey(
+        User, on_delete=models.PROTECT)
+    thread = models.ForeignKey(
+        Thread, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(
+        verbose_name='作成日時', auto_now_add=True)
+    updated_at = models.DateTimeField(
+        verbose_name='更新日時', auto_now=True)
+
+    def __str__(self):
+        return self.message
+
+    class Meta:
+        db_table = 'comment'
