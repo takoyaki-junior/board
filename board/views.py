@@ -24,10 +24,10 @@ index = BoardListView.as_view()
 class BoardDetailView(LoginRequiredMixin, generic.DetailView):
     template_name = 'board/detail.html'
     model = Thread
-    context_object_name = 'thread'
+    context_object_name = 'threads'
     # ログ出力
     logger = logging.getLogger(__name__)
-    logger.info("スレッドを表示")
+    logger.info("一覧コメントを表示")
 
 
 detail = BoardDetailView.as_view()
@@ -85,6 +85,7 @@ update = BoardUpdateView.as_view()
 
 
 class DeleteView(LoginRequiredMixin, generic.edit.DeleteView):
+    template_name = 'board/delete.html'
     model = Thread
     success_url = reverse_lazy('board:index')
 

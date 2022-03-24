@@ -2,22 +2,17 @@
  
 {% block content %}
  
-<div>
-    <p>タイトル：{{ thread.title }}</p>
-    <p>投稿内容：<br>{{ thread.content }}</p>
-    <p>投稿者：{{ thread.created_by }}</p>
-    <p>作成時間：{{ thread.created_at|date:"Y-m-j H:i:s" }}</p>
-    <p>更新時間：{{ thread.updated_at|date:"Y-m-j H:i:s" }}</p>
-</div>
-<div class='mt-4'>
-    {% if request.user.id == thread.created_by.id %}
-    <a href='{% url "board:update" thread.pk %}'  class='btn btn-outline-primary mr-2'>編集</a>
-    {% endif %}
- 
-    <a href='{% url "board:index" %}' class='btn btn-outline-primary'>一覧に戻る</a>
- 
-    {% if request.user.id == thread.created_by.id %}
-    <a href='{% url "board:delete" thread.pk %}'  class='btn btn-danger ml-5'>削除</a>
-    {% endif %}
+
+<div class="container">
+  <h1 class="my-5">コメント {{ threads.title }}</h1>
+  <div class="card mb-3">
+    <div class="card-header">
+      ID : {{ threads.content }}
+    </div>
+    <div class="card-footer">
+      Created at : {{ threads.created_at }}<br>
+      Updated at : {{ threads.created_by }}
+    </div>
+  </div>
 </div>
 {% endblock %}
