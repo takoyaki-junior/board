@@ -1,25 +1,39 @@
-{% extends "base.html" %}
-{% block page_title %}3ちゃんねる{% endblock %}
-
-{% block title %}3ちゃんねる{% endblock %}
-
+{% extends "base/base.html" %}
+{% block title %}3ちゃんねる - {{ block.super }}{% endblock %}
 {% block content %}
-    <div class="header"><h3>新着トピック</h3></div>
-        <div class="ui divided items">
-            {% for thread in threads %}
-            <div class="card mb-3">
-                <div class="card-body">
-                    <a href="{% url "board:detail" thread.pk %}"><h5 class="card-title">{{ thread.title }}</h5></a>
-                    <p class="card-text">{{ thread.content }}</p>
-                    <a href='{% url "board:update" thread.pk %}'>編集</a>
-                    <a href='{% url "board:delete" thread.pk %}'>削除</a>
-                    <p class="card-text">
-                        <span class="name">{{thread.created_by}}</span>
-                        <span class="date">{{thread.created_at}}</span>
-                    </p>
+<div class="ui grid stackable">
+    <div class="eleven wide column">
+        <div class="ui breadcrumb">
+            <a class="section">TOP</a>
+            <i class="right angle icon divider"></i>
+            <a class="section">category</a>
+            <i class="right angle icon divider"></i>
+            <div class="active section">thread</div>
+        </div>
+        <div class="ui segment">
+            <div class="content">
+                <div class="header"><h3>新着スレッド</h3></div>
+                <div class="ui divided items">
+                    {% for thread in threads %}
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">
+                                <a href="{% url "board:detail" thread.pk %}"><h4>{{ thread.title }}</h4></a>
+                            </div>
+                            <p class="card-text">{{ thread.content }}</p>
+                            <a href='{% url "board:update" thread.pk %}'>編集</a>
+                            <a href='{% url "board:delete" thread.pk %}'>削除</a>
+                            <div class="meta">
+                                <span class="name">{{thread.created_by}}</span>
+                                <span class="date">{{thread.created_at}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
-            {% endfor %}
         </div>
     </div>
+    {% include 'base/sidebar.html' %}
+</div>
 {% endblock %}
