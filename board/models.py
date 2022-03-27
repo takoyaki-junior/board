@@ -91,9 +91,9 @@ class Comment(models.Model):
     comment = models.TextField(
         verbose_name='コメント', blank=False, null=False)
     created_by = models.ForeignKey(
-        User, verbose_name='スレッド', on_delete=models.PROTECT)
+        User, verbose_name='投稿者', on_delete=models.PROTECT)
     thread = models.ForeignKey(
-        Thread, verbose_name='投稿者', on_delete=models.CASCADE)
+        Thread, verbose_name='スレッド', on_delete=models.CASCADE)
     status = models.IntegerField(
         verbose_name='コメントのステータス', default=0, choices=COMMENT_STATUS_CHOICE)
     created_at = models.DateTimeField(

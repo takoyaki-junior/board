@@ -15,19 +15,19 @@
 
 <body>
   <div class="ui stackable inverted menu">
-    <div class="header item">
+    <a href="{% url 'board:index' %}" class="header item">
         3ちゃんねる
-    </div>
-    <a class="item" href='{% url "board:terms" %}'>
+    </a>
+    <a class="item" href="{% url 'board:about' %}">
         このサイトはなに？
     </a>
     <div class="right menu">
         {% if user.is_authenticated %}
         <!-- ログインしているとき -->
         <span class='item'>name : {{ user }}</span>
-        <a class="item" href='{% url "board:index" %}'>トップ</a>
+        <a class="item" href="{% url 'board:index' %}">トップ</a>
         <a class="item" href="{% url 'board:create' %}">スレッド作成</a>
-        <a class="item" href="{% url "accounts:logout" %}">ログアウト</a>
+        <a class="item" href="{% url 'accounts:logout' %}">ログアウト</a>
         {% else %}
         <!-- ログインしていないとき -->
         <a class="item" href="{% url "accounts:login" %}">ログイン</a>
@@ -43,9 +43,9 @@
   <div class="ui inverted stackable footer segment">
     <div class="ui container center aligned">
       <div class="ui horizontal inverted small divided link list">
-        <a class="item">© 2021 3ちゃんねる</a>
+        <a class="item" href='{% url "board:index" %}'>© 2022 3ちゃんねる</a>
         <a class="item" href='{% url "board:terms" %}'>利用規約</a>
-        <a class="item">プライバシーポリシー</a>
+        <a class="item" href='{% url "board:policy" %}'>プライバシーポリシー</a>
       </div>
     </div>
   </div>

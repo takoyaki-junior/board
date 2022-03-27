@@ -9,5 +9,8 @@ urlpatterns = [
     path('<int:pk>/update/', views.update, name='update'),
     path('<int:pk>/delete/', views.delete, name='delete'),
     path('create/', views.create, name='create'),
+    path('category/<str:url_code>/', views.CategoryView.as_view(), name='category'),
     path('terms/', TemplateView.as_view(template_name='base/terms.html'), name='terms'),
+    path('policy/', TemplateView.as_view(template_name='base/policy.html'), name='policy'),
+    path('about/', TemplateView.as_view(template_name='base/about.html'), name='about'),
 ]
