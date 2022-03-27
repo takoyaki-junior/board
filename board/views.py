@@ -24,7 +24,7 @@ index = BoardListView.as_view()
 class BoardDetailView(LoginRequiredMixin, generic.DetailView):
     template_name = 'board/detail.html'
     model = Thread
-    context_object_name = 'threads'
+    context_object_name = 'thread'
     # ログ出力
     logger = logging.getLogger(__name__)
     logger.info("一覧コメントを表示")

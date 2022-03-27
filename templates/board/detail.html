@@ -1,18 +1,29 @@
 {% extends 'base/base.html' %}
- 
+{% block title %}トピック作成 - {{ block.super }}{% endblock %}
 {% block content %}
- 
-
-<div class="container">
-  <h1 class="my-5">コメント {{ threads.title }}</h1>
-  <div class="card mb-3">
-    <div class="card-header">
-      ID : {{ threads.content }}
+<div class="ui grid stackable">
+  <div class="eleven wide column">
+    <div class="ui breadcrumb">
+      <a href="{% url 'board:index' %}" class="section">TOP</a>
+      <i class="right angle icon divider"></i>
+      <a class="section">{{thread.category.name}}</a>
+      <i class="right angle icon divider"></i>
+      <a class="active section">{{thread.title}}</a>
     </div>
-    <div class="card-footer">
-      Created at : {{ threads.created_at }}<br>
-      Updated at : {{ threads.created_by }}
+    <div class="ui segment">
+      <div class="content">
+        <div class="header">
+            <h3>{{thread.title}}</h3>
+        </div>
+        <p>{{thread.created_by}} - {{thread.created_at}}</p>
+        <div class="ui secondary segment">
+          <p>
+            <pre>{{thread.content}}</pre>
+          </p>
+        </div>
+      </div>
     </div>
   </div>
+  {% include 'base/sidebar.html' %}
 </div>
 {% endblock %}

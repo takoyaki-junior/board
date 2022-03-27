@@ -1,22 +1,26 @@
 {% extends "base/base.html" %}
 
 {% block content %}
-    <div class="header"><h3>新着トピック</h3></div>
-        <div class="ui divided items">
-            {% for thread in threads %}
-            <div class="card mb-3">
-                <div class="card-body">
-                    <a href="{% url "board:detail" thread.pk %}"><h5 class="card-title">{{ thread.title }}</h5></a>
-                    <p class="card-text">{{ thread.content }}</p>
-                    <a href='{% url "board:update" thread.pk %}'>編集</a>
-                    <a href='{% url "board:delete" thread.pk %}'>削除</a>
-                    <p class="card-text">
-                        <span class="name">{{thread.created_by}}</span>
-                        <span class="date">{{thread.created_at}}</span>
-                    </p>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
+<div class="header">
+  <h3>新着トピック</h3>
+</div>
+<div class="ui divided items">
+  {% for thread in threads %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <a href="{% url "board:detail" thread.pk %}">
+        <h5 class="card-title">{{ thread.title }}</h5>
+      </a>
+      <p class="card-text">{{ thread.content }}</p>
+      <a href='{% url "board:update" thread.pk %}'>編集</a>
+      <a href='{% url "board:delete" thread.pk %}'>削除</a>
+      <p class="card-text">
+        <span class="name">{{thread.created_by}}</span>
+        <span class="date">{{thread.created_at}}</span>
+      </p>
     </div>
+  </div>
+  {% endfor %}
+</div>
+</div>
 {% endblock %}

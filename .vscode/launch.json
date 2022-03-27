@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Django",
+      "type": "python",
+      "request": "launch",
+      "python": "C:\\workspace\\board\\board\\.venv\\Scripts\\python.exe",
+      "cwd": "C:\\workspace\\board\\board",
+      "program": "C:\\workspace\\board\\board\\manage.py",
+      "args": [
+        "runserver",
+        "8081"
+      ],
+      "django": true,
+      "justMyCode": false
+    }
+  ]
+}
