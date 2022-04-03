@@ -30,6 +30,19 @@ class CategoryManager(models.Manager):
     pass
 
 
+class VoteManager(models.Manager):
+    def create_vote(self, ip_address, comment_id):
+        vote = self.model(
+            ip_address=ip_address,
+            comment_id=comment_id
+        )
+        try:
+            vote.save()
+        except:
+            return False
+        return True
+
+
 class Category(models.Model):
     name = models.CharField(
         'カテゴリー名',
@@ -108,3 +121,23 @@ class Comment(models.Model):
 
     class Meta:
         db_table = 'comment'
+
+
+class Vote(models.Model):
+    comment = models.ForeignKey(
+        Comment,
+        on_delete=models.CASCADE,
+        null=True,
+    )
+    ip_address = models.CharField(
+        'IPアドレス',
+        max_length=50,
+    )
+
+    objects = VoteManager()
+
+    def __str__(self):
+        return '{}-{}'.format(self.comment.topic.title, self.comment.no)
+
+    class Meta:
+        db_table = 'vote'

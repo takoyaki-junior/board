@@ -4,6 +4,7 @@ from .models import Category, Thread, Comment
 from .forms import ThreadForm, CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.db.models import Count
 import logging
 from django.urls import reverse_lazy
 from django.http import HttpResponse
@@ -57,7 +58,7 @@ class BoardDetailView(LoginRequiredMixin, generic.FormView):
         ctx = super().get_context_data()
         ctx['thread'] = Thread.objects.get(id=self.kwargs['pk'])
         ctx['comments'] = Comment.objects.filter(
-            thread=self.kwargs['pk']).order_by('no')
+            thread=self.kwargs['pk']).annotate(vote_count=Count('vote')).order_by('no')
         return ctx
 
 
