@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'board.apps.BoardConfig',
     'api.apps.ApiConfig',
+    'search.apps.SearchConfig',
     # Third party apps
     # Django apps
     'django.contrib.admin',

@@ -6,5 +6,6 @@ urlpatterns = [
     path('board/', include("board.urls")),
     #path('accounts/', include('django.contrib.auth.urls')),
     path('api/', include('api.urls')),
+    path('search/', include('search.urls')),
     path('', include('accounts.urls')),
 ]
