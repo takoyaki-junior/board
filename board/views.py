@@ -25,6 +25,8 @@ index = BoardListView.as_view()
 class CategoryView(LoginRequiredMixin, generic.ListView):
     template_name = 'board/category.html'
     context_object_name = 'threads'
+    paginate_by = 1  # 1ページに表示するオブジェクト数 サンプルのため1にしています
+    page_kwarg = 'p'  # GETでページ数を受けるパラメータ名。指定しないと'page'がデフォルト
 
     def get_queryset(self):
         return Thread.objects.filter(category__url_code=self.kwargs['url_code'])
