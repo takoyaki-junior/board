@@ -73,6 +73,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+EMAIL_BACKEND = EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAL_USE_TLS = False
+EMAIL_PORT = 1025
+EMAIL_HOST = '192.168.0.10'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASS = ''
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

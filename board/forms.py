@@ -11,6 +11,7 @@ class ThreadForm(ModelForm):
             'title',
             'category',
             'content',
+            # 'created_by',
         ]
 
         def __init__(self, *args, **kwargs):
@@ -18,7 +19,7 @@ class ThreadForm(ModelForm):
             super().__init__(*args, **kwargs)
             # self.fields['title'].widget.attrs['class'] = 'huga'
             self.fields['category'].empty_label = '選択して下さい'
-            # self.fields['user_name'].widget.attrs['value'] = '匿名'
+            #self.fields['created_by'].widget.attrs['value'] = '匿名'
 
 
 class CommentForm(ModelForm):

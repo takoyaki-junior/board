@@ -8,6 +8,8 @@ from django.db.models import Count
 import logging
 from django.urls import reverse_lazy
 from django.http import HttpResponse
+from django.core.mail import send_mail, EmailMessage
+from django.template.loader import get_template
 
 
 class BoardListView(LoginRequiredMixin, generic.ListView):
@@ -67,35 +69,111 @@ class BoardDetailView(LoginRequiredMixin, generic.FormView):
 detail = BoardDetailView.as_view()
 
 
-class BoardCreateView(LoginRequiredMixin, generic.CreateView):
+# class BoardCreateView(LoginRequiredMixin, generic.CreateView):
+#     template_name = 'board/create.html'
+#     form_class = ThreadForm
+#     model = Thread
+#     success_url = reverse_lazy('board:index')
+
+#     def form_valid(self, form):
+#         ctx = {'form': form}
+#         if self.request.POST.get('next', '') == 'confirm':
+#             return render(self.request, 'board/create_confirm.html', ctx)
+#         if self.request.POST.get('next', '') == 'back':
+#             return render(self.request, 'board/create.html', ctx)
+#         if self.request.POST.get('next', '') == 'create':
+#             # DBに登録する準備を行う
+#             thread = form.save(commit=False)
+#             # threadにログイン中ユーザー情報を追加
+#             thread.created_by = self.request.user
+#             # 保存
+#             thread.save()
+#             # ログ出力
+#             logger = logging.getLogger(__name__)
+#             logger.info("スレッドを作成しました")
+#             # メール送信処理
+#             template = get_template('board/mail/board_mail.html')
+#             mail_ctx = {
+#                 'title': form.cleaned_data['title'],
+#                 'created_by': self.request.user,
+#                 'content': form.cleaned_data['content'],
+#             }
+#             # EmailMessage(
+#             #     subject='トピック作成: ' + form.creaned_data['title'],
+#             #     body=template.render(mail_ctx),
+#             #     from_email='test@example.com',
+#             #     to=['admin2@example.com'],
+#             #     # cc=['admin2@example.com'],
+#             #     # bcc=['admin3@example.com'],
+#             # ).send()
+#             return super().form_valid(form)
+#         else:
+#             # 正常動作ではここは通らない。エラーページへの遷移でも良い
+#             return redirect(reverse_lazy('board:index'))
+
+
+# create2 = BoardCreateView.as_view()
+
+
+class BoardCreateViewBySession(LoginRequiredMixin, generic.FormView):
     template_name = 'board/create.html'
     form_class = ThreadForm
-    model = Thread
-    success_url = reverse_lazy('board:index')
 
-    def form_valid(self, form):
-        ctx = {'form': form}
-        if self.request.POST.get('next', '') == 'confirm':
-            return render(self.request, 'board/create_confirm.html', ctx)
-        if self.request.POST.get('next', '') == 'back':
-            return render(self.request, 'board/create.html', ctx)
-        if self.request.POST.get('next', '') == 'create':
-            # DBに登録する準備を行う
-            thread = form.save(commit=False)
-            # threadにログイン中ユーザー情報を追加
-            thread.created_by = self.request.user
-            # 保存
-            thread.save()
-            # ログ出力
-            logger = logging.getLogger(__name__)
-            logger.info("スレッドを作成しました")
-            return super().form_valid(form)
-        else:
-            # 正常動作ではここは通らない。エラーページへの遷移でも良い
-            return redirect(reverse_lazy('board:index'))
+    def post(self, request, *args, **kwargs):
+        ctx = {}
+        if request.POST.get('next', '') == 'back':
+            if 'input_data' in self.request.session:
+                input_data = self.request.session['input_data']
+                form = ThreadForm(input_data)
+                ctx['form'] = form
+            return render(request, self.template_name, ctx)
+
+        elif request.POST.get('next', '') == 'create':
+            if 'input_data' in request.session:
+                form = self.form_class(request.session['input_data'])
+                # DBに登録する準備を行う
+                thread = form.save(commit=False)
+                # threadにログイン中ユーザー情報を追加
+                thread.created_by = self.request.user
+                # 保存
+                thread.save()
+                # ログ出力
+                logger = logging.getLogger(__name__)
+                logger.info("スレッドを作成しました2")
+                # メール送信処理は省略
+
+                response = redirect(reverse_lazy('board:index'))
+                response.set_cookie(
+                    'categ_id', request.session['input_data']['category'])
+                request.session.pop('input_data')  # セッションに保管した情報の削除
+                return response
+
+        elif request.POST.get('next', '') == 'confirm':
+            form = ThreadForm(request.POST)
+            if form.is_valid():
+                ctx = {'form': form}
+                # セッションにデータを保存
+                input_data = {
+                    'title': form.cleaned_data['title'],
+                    'content': form.cleaned_data['content'],
+                    'category': form.cleaned_data['category'].id,
+                }
+                request.session['input_data'] = input_data
+                ctx['category'] = form.cleaned_data['category']
+                return render(request, 'board/create_confirm.html', ctx)
+            else:
+                return render(request, self.template_name, {'form': form})
+
+    def get_context_data(self):
+        ctx = super().get_context_data()
+        if 'categ_id' in self.request.COOKIES:
+            form = ctx['form']
+            form['category'].field.initial = self.request.COOKIES['categ_id']
+            ctx['form'] = form
+        return ctx
 
 
-create = BoardCreateView.as_view()
+create = BoardCreateViewBySession.as_view()
 
 
 class BoardUpdateView(LoginRequiredMixin, generic.edit.UpdateView):
