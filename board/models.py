@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import User
+from django.core.validators import FileExtensionValidator
 
 # トピックのステータス一覧
 TOPIC_STATUS_CHOICE = (
@@ -22,7 +23,15 @@ class ThreadManager(models.Manager):
 
 class CommentManager(models.Manager):
     # Comment操作に関する処理を追加
-    pass
+    def create_comment(self, created_by, comment, thread_id, image=None):
+        comment = self.model(
+            created_by=created_by,
+            comment=comment,
+            image=image
+        )
+        comment.thread = Thread.objects.get(id=thread_id)
+        comment.no = self.filter(thread_id=thread_id).count() + 1
+        comment.save()
 
 
 class CategoryManager(models.Manager):
@@ -103,6 +112,11 @@ class Comment(models.Model):
     no = models.IntegerField(default=0)
     comment = models.TextField(
         verbose_name='コメント', blank=False, null=False)
+    image = models.ImageField(
+        verbose_name='投稿画像',
+        validators=[FileExtensionValidator(['jpg', 'png'])],
+        upload_to='images/%Y/%m/%d/', null=True, blank=True,
+    )
     created_by = models.ForeignKey(
         User, verbose_name='投稿者', on_delete=models.PROTECT)
     thread = models.ForeignKey(

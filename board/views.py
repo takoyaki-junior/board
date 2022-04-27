@@ -51,7 +51,13 @@ class BoardDetailView(LoginRequiredMixin, generic.FormView):
         #     thread=self.kwargs['pk']).count() + 1
         # comment.created_by = self.request.user
         # comment.save()
-        # コメント保存のためsave_with_topicメソッドを呼ぶ
+        # コメント保存のためsave_with_threadメソッドを呼ぶ
+        Comment.objects.create_comment(
+            created_by=self.request.user,
+            comment=form.cleaned_data['comment'],
+            thread_id=self.kwargs['pk'],
+            image=form.cleaned_data['image']
+        )
         form.save_with_thread(self.kwargs.get('pk'), self.request.user)
         return super().form_valid(form)
 

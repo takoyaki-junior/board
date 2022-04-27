@@ -27,7 +27,7 @@ class CommentForm(ModelForm):
         # モデルを指定
         model = Comment
         # フォームとして表示したいカラムを指定
-        fields = ("comment",)
+        fields = ("comment", "image")
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('label_suffix', '')
