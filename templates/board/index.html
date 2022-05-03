@@ -21,7 +21,12 @@
             <div class="content">
               <div class="header">
                 <a href="{% url "board:detail" thread.pk %}">
-                  <h4>{{ thread.title }}</h4>
+                  <h4>
+                    {% if thread.id in new_list %}
+                    <div class="ui violet horizontal label">new</div>
+                    {% endif %}
+                    {{thread.title}}
+                  </h4>
                 </a>
               </div>
               <p class="card-text">{{ thread.content }}</p>

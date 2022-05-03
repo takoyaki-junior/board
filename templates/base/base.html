@@ -27,6 +27,7 @@
         <span class='item'>name : {{ user }}</span>
         <a class="item" href="{% url 'board:index' %}">トップ</a>
         <a class="item" href="{% url 'board:create' %}">スレッド作成</a>
+        <a class="item" href="{% url 'accounts:profile' %}">ユーザー情報</a>
         <a class="item" href="{% url 'accounts:logout' %}">ログアウト</a>
         {% else %}
         <!-- ログインしていないとき -->

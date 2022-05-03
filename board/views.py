@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import View, generic
 from .models import Category, Thread, Comment
@@ -16,9 +17,33 @@ class BoardListView(LoginRequiredMixin, generic.ListView):
     template_name = 'board/index.html'
     queryset = Thread.objects.all().order_by('-created_at')
     context_object_name = 'threads'
-    # ログ出力
-    logger = logging.getLogger(__name__)
-    logger.info("スレッドを表示")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.new_list = []
+
+    def get_queryset(self):
+        thread_list = Thread.objects.order_by('-created_at')
+        self.new_list = self._make_new_list(thread_list)
+        return thread_list
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['new_list'] = self.new_list
+        return ctx
+
+    def _make_new_list(self, thread_list):
+        def pickup_topic(thread):
+            now = timezone.now()
+            diff = (now - thread.created_at).total_seconds() / (60 * 60)
+            if diff > 1:
+                return False
+            else:
+                return True
+        # ログ出力
+        logger = logging.getLogger(__name__)
+        logger.info("スレッドを表示")
+        return list(map(lambda x: x.id, filter(pickup_topic, thread_list)))
 
 
 index = BoardListView.as_view()
