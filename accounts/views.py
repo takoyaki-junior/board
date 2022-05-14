@@ -61,3 +61,27 @@ class MyPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
 class MyPasswordChangeDoneView(LoginRequiredMixin, PasswordChangeDoneView):
     template_name = 'accounts/password_change_done.html'
     title = 'これでええか？'
+
+
+class MyPasswordResetView(PasswordResetView):
+    email_template_name = 'accounts/password_reset_email.html'
+    subject_template_name = 'accounts/password_reset_subject.txt'
+    success_url = reverse_lazy('accounts:password_reset_done')
+    template_name = 'accounts/password_reset_form.html'
+    title = 'パスワードリセット'
+
+
+class MyPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'accounts/password_reset_done.html'
+    title = 'パスワードリセット完了'
+
+
+class MyPasswordResetConfirmView(PasswordResetConfirmView):
+    success_url = reverse_lazy('accounts:password_reset_complete')
+    template_name = 'accounts/password_reset_confirm.html'
+    title = 'パスワードリセット確認'
+
+
+class MyPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'accounts/password_reset_complete.html'
+    title = 'パスワードリセット確認完了'
