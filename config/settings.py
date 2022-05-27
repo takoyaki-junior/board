@@ -81,6 +81,12 @@ EMAIL_HOST = '192.168.0.10'
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASS = ''
 
+# 未使用
+# AUTHENTICATION_BACKENDS = [
+#     'django.contrib.auth.backends.ModelBackend',
+#     'accounts.backends.EmailAuthBackend',
+# ]
+
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
